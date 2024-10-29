@@ -1,0 +1,115 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <title>方位學習遊戲</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif, "Microsoft JhengHei";
+            background-color: #f0f0f0;
+        }
+        .game-container {
+            text-align: center;
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 10px;
+            margin: 20px;
+        }
+        .direction-btn {
+            width: 100px;
+            height: 60px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .direction-btn:hover {
+            background-color: #45a049;
+        }
+        .arrow {
+            font-size: 40px;
+            margin: 20px;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+        #score {
+            font-size: 24px;
+            margin: 20px;
+        }
+        #target {
+            font-size: 20px;
+            color: #2196F3;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>方位學習遊戲</h1>
+        <div id="score">得分: 0</div>
+        <div id="target">找尋: 北</div>
+        <div class="arrow">⬆️</div>
+        <div class="button-grid">
+            <button class="direction-btn" onclick="checkAnswer('西北')">西北</button>
+            <button class="direction-btn" onclick="checkAnswer('北')">北</button>
+            <button class="direction-btn" onclick="checkAnswer('東北')">東北</button>
+            <button class="direction-btn" onclick="checkAnswer('西')">西</button>
+            <div style="width: 100px; height: 60px; display: flex; justify-content: center; align-items: center;">🎯</div>
+            <button class="direction-btn" onclick="checkAnswer('東')">東</button>
+            <button class="direction-btn" onclick="checkAnswer('西南')">西南</button>
+            <button class="direction-btn" onclick="checkAnswer('南')">南</button>
+            <button class="direction-btn" onclick="checkAnswer('東南')">東南</button>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let currentTarget = '';
+        const directions = ['北', '南', '東', '西', '東北', '西北', '東南', '西南'];
+        const rotations = {
+            '北': 0,
+            '東北': 45,
+            '東': 90,
+            '東南': 135,
+            '南': 180,
+            '西南': 225,
+            '西': 270,
+            '西北': 315
+        };
+
+        function generateNewTarget() {
+            let newTarget;
+            do {
+                newTarget = directions[Math.floor(Math.random() * directions.length)];
+            } while (newTarget === currentTarget);
+            
+            currentTarget = newTarget;
+            document.getElementById('target').textContent = `找尋: ${currentTarget}`;
+            document.querySelector('.arrow').style.transform = `rotate(${rotations[currentTarget]}deg)`;
+        }
+
+        function checkAnswer(direction) {
+            if (direction === currentTarget) {
+                score += 10;
+                alert('正確! +10分');
+            } else {
+                score -= 5;
+                alert('錯誤! -5分');
+            }
+            
+            document.getElementById('score').textContent = `得分: ${score}`;
+            generateNewTarget();
+        }
+
+        // Start the game
+        generateNewTarget();
+    </script>
+
+
+</body></html>
